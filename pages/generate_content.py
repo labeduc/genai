@@ -42,7 +42,7 @@ cont_q_md = Markdown(
 **Arquivo**
 |>
 <|c3|
-<|{arquivo}|file_selector|label=Select File|on_action=upload_file|extensions=.csv,.xlsx|drop_message=Arquivo carregado|>
+<|{arquivo}|file_selector|label=Select File|on_action=upload_file|extensions=.png,.jpg,.jpeg,.pdf,.csv,.xlsx|drop_message=Arquivo carregado|>
 <br/>
 **Prompt**
 <|{prompt}|input|label="Pergunte algo sobre o arquivo que foi feito upload:"|multiline=true|class_name=fullwidth|>
