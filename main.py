@@ -18,7 +18,7 @@ pages = {
     #  "GC - Visualizar": tbl_q_md,
     #  "GC - Sumario": sum_q_md,
     "Analisar": cont_q_md,
-    "Código": code_q_md,
+    "Codigo": code_q_md,
 }
 
 

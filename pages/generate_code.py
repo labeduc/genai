@@ -30,11 +30,11 @@ resultado = ""
 code_q_md = Markdown(
     """<|container|
     
-# Análise de Conteúdo
+# Geração de Código
 
 <|c3|
 **Prompt**
-<|{prompt}|input|label="Pergunte algo sobre o arquivo que foi feito upload:"|multiline=true|class_name=fullwidth|>
+<|{prompt}|input|label="Que código você quer gerar:"|multiline=true|class_name=fullwidth|>
 |>
 ---
 <br/>
