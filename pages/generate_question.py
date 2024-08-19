@@ -57,7 +57,7 @@ def send_question(state, id, action):
 
 
 # Definição de Variável
-area = "Ciência de Dados"
+area = "Lógica e Linguagens de Programaçao"
 nivel = "Fácil"
 tipo = "Escolha Simples"
 objetivo = "Lógica de Programação com Python: if, for, dicionários e listas"
@@ -99,7 +99,7 @@ Inclui Introdução?<br/><|{tem_introducao}|toggle|lov=Sim;Não|>
 Inclui Resposta?<br/><|{tem_resposta}|toggle|lov=Sim;Não|>
 |>
 |>
----
+
 <br/>
 <center><|Gerar Questão|button|on_action=send_question|> <|Salvar Questão|button|on_action=send_database|active={salvar}|></center>
 <br/>

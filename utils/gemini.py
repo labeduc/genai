@@ -2,6 +2,7 @@
 
 # Import from standard library
 import logging
+import traceback
 
 # Import from 3rd party libraries
 import google.generativeai as genai
@@ -16,7 +17,23 @@ logging.getLogger("gemini").setLevel(logging.WARNING)
 
 
 class Gemini:
-    """Gemini Connector."""
+    """Gemini Connector.
+    This class provides methods for interacting with the Gemini AI model.
+    Methods:
+      build_prompt(nivel, objetivo, tipo, area, tem_introducao, tem_resposta):
+        Builds a prompt string based on the provided parameters.
+      set_key(key):
+        Sets the API key for the Gemini AI model.
+      upload_to_gemini(path, mime_type=None):
+        Uploads a file to the Gemini AI model.
+      complete(prompt):
+        Calls the Gemini AI model to generate a response based on the provided prompt.
+      analyze(prompt, arquivo):
+        Calls the Gemini AI model to generate a response based on the provided prompt and file.
+    Attributes:
+      model:
+        The Gemini AI model instance.
+    """
 
     model = None
 
@@ -29,6 +46,9 @@ class Gemini:
         tem_introducao: str,
         tem_resposta: str,
     ):
+        """
+        Builds a prompt string based on the provided parameters.
+        """
         if tipo in [
             "Escolha Simples",
             "Escolha Múltipla",
@@ -97,6 +117,9 @@ class Gemini:
 
     @staticmethod
     def set_key(key: str):
+        """
+        Sets the API key for the Gemini AI model.
+        """
         global model
         genai.configure(api_key=key)
         model = genai.GenerativeModel(
@@ -107,6 +130,14 @@ class Gemini:
 
     @staticmethod
     def upload_to_gemini(path: str, mime_type: str = None) -> any:
+        """
+        Uploads a file to Gemini.
+        Args:
+          path (str): The path of the file to upload.
+          mime_type (str, optional): The MIME type of the file. Defaults to None.
+        Returns:
+          any: The uploaded file object.
+        """
         file = genai.upload_file(path, mime_type=mime_type)
         print(f"Uploaded file '{file.display_name}' as: {file.uri}")
         return file
@@ -128,12 +159,14 @@ class Gemini:
 
     @staticmethod
     def analyze(prompt: str, arquivo: any) -> str:
-        """Call Gemini AI with text prompt.
+        """Call Gemini AI with text prompt and file.
         Args:
             prompt: text prompt
-        Return: predicted response text
+            arquivo: file object
+        Return: predicted response text and status
         """
         global model
+        result = {"success": None, "text": None}
         try:
             history = {
                 "role": "user",
@@ -143,7 +176,10 @@ class Gemini:
             master_prompt = f"Usando o arquivo: {arquivo.display_name}, responda o questionamento abaixo:\n{prompt}"
             response = chat_session.send_message(master_prompt)
             chat_session = None
-            return response.text
+            result["success"] = True
+            result["text"] = response.text
         except Exception as e:
             logging.error(f"OpenAI API error: {e}")
-            return None
+            result["success"] = False
+            result["text"] = traceback.format_exc()
+        return result

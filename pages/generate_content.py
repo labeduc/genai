@@ -19,11 +19,13 @@ def send_question(state, id, action):
     gemini.set_key(os.getenv("GEMINIAI_API_KEY"))
     arquivo_bin = gemini.upload_to_gemini(state.arquivo)
     resultado = gemini.analyze(state.prompt, arquivo_bin)
-    if resultado:
-        state.resultado = resultado
+    if resultado["success"]:
+        state.resultado = resultado["text"]
         notify(state, "success", "Análise concluída!")
     else:
-        state.resultado = "Erro ao utilizar o Gemini. Verifique o Log"
+        state.resultado = (
+            f"Erro ao utilizar o Gemini. Verifique o Log abaixo:\n{resultado['text']}"
+        )
         notify(state, "failure", "Análise não concluída!")
 
 
@@ -47,7 +49,6 @@ cont_q_md = Markdown(
 **Prompt**
 <|{prompt}|input|label="Pergunte algo sobre o arquivo que foi feito upload:"|multiline=true|class_name=fullwidth|>
 |>
----
 <br/>
 <center><|Analisar|button|on_action=send_question|></center>
 <br/>
